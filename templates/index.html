@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}THE ANTS — Главная{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Добро пожаловать в <span class="highlight">THE ANTS</span></h1>
+        <p class="hero-text">Мы создаём инновационные решения для вашего бизнеса</p>
+        <a href="{{ url_for('contact') }}" class="btn btn-primary">Связаться с нами</a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2 class="section-title">Наши услуги</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">&#9881;</div>
+                <h3>Разработка</h3>
+                <p>Создание современных веб-приложений с использованием передовых технологий</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#9889;</div>
+                <h3>Оптимизация</h3>
+                <p>Повышение производительности и скорости работы ваших систем</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#128640;</div>
+                <h3>Запуск</h3>
+                <p>Полный цикл от идеи до запуска готового продукта</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="container">
+        <h2>Готовы начать?</h2>
+        <p>Расскажите нам о вашем проекте, и мы поможем воплотить его в жизнь</p>
+        <a href="{{ url_for('contact') }}" class="btn btn-secondary">Начать проект</a>
+    </div>
+</section>
+{% endblock %}
