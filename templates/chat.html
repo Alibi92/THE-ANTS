@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}AI Чат — THE ANTS{% endblock %}
+
+{% block content %}
+<div class="chat-page">
+    <div class="container chat-grid">
+        <aside class="chat-sidebar">
+            <button class="btn-new-chat" type="button" id="btn-new-chat">
+                <span aria-hidden="true">+</span> Новый чат
+            </button>
+
+            <div class="chat-history-wrap">
+                <h3 class="chat-section-title">История</h3>
+                <ul class="chat-history" id="chat-history"></ul>
+            </div>
+
+            <div class="chat-model-info">
+                <div class="chat-model-badge">
+                    <span class="dot {% if cfg.ready %}dot-ok{% else %}dot-off{% endif %}"></span>
+                    <span id="model-name">{{ cfg.model }}</span>
+                </div>
+                <ul class="chat-features">
+                    {% if cfg.features.web_search %}<li>🔎 Поиск в интернете</li>{% endif %}
+                    {% if cfg.features.web_fetch %}<li>🌐 Разбор ссылок</li>{% endif %}
+                    {% if cfg.features.code_execution %}<li>🐍 Выполнение кода</li>{% endif %}
+                    {% if cfg.features.file_upload %}<li>📎 Загрузка файлов</li>{% endif %}
+                    {% if cfg.features.thinking %}<li>🧠 Размышления</li>{% endif %}
+                    {% if cfg.features.prompt_caching %}<li>⚡ Кэширование</li>{% endif %}
+                </ul>
+            </div>
+        </aside>
+
+        <section class="chat-main">
+            {% if not cfg.ready %}
+            <div class="chat-setup-warning">
+                <h2>Модель пока не подключена</h2>
+                <p>
+                    Чтобы запустить AI-чат, администратор должен задать переменную окружения
+                    <code>ANTHROPIC_API_KEY</code> в файле <code>.env</code> и перезапустить приложение.
+                </p>
+                <p class="hint">
+                    Остальные параметры (модель, включённые инструменты, лимиты) уже настроены
+                    и работают из коробки.
+                </p>
+            </div>
+            {% else %}
+            <div class="chat-messages" id="messages">
+                <div class="chat-welcome">
+                    <h1>Чем помочь?</h1>
+                    <p>Задайте любой вопрос — на русском языке. Я умею искать в интернете, разбирать ссылки,
+                        выполнять код и анализировать файлы.</p>
+                    <div class="chat-prompt-suggestions">
+                        <button type="button" class="suggestion" data-prompt="Найди последние новости про искусственный интеллект за эту неделю">Свежие новости про AI</button>
+                        <button type="button" class="suggestion" data-prompt="Посчитай среднее и стандартное отклонение для [12, 19, 3, 5, 27, 8, 14, 21, 6, 10]">Посчитать статистику</button>
+                        <button type="button" class="suggestion" data-prompt="Разбери страницу https://ru.wikipedia.org/wiki/Муравьи и сделай краткое резюме">Разобрать ссылку</button>
+                        <button type="button" class="suggestion" data-prompt="Напиши короткое стихотворение про команду муравьёв-разработчиков">Креативная задача</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-thinking-indicator" id="thinking-indicator" hidden>
+                <span class="ant-spinner"></span>
+                <span>Размышляю…</span>
+            </div>
+
+            <form class="chat-composer" id="chat-form" autocomplete="off">
+                <div class="chat-attachments" id="attachments"></div>
+                <div class="chat-input-row">
+                    <label class="btn-attach" title="Прикрепить файл" for="file-input">
+                        <span aria-hidden="true">📎</span>
+                        <input type="file" id="file-input" multiple hidden
+                               accept="image/*,.pdf,.csv,.txt,.md,.json,.docx,.xlsx,.pptx">
+                    </label>
+                    <textarea id="composer" rows="1" placeholder="Спросите что угодно…" autofocus></textarea>
+                    <button type="submit" class="btn-send" id="btn-send" disabled>Отправить</button>
+                    <button type="button" class="btn-stop" id="btn-stop" hidden>Стоп</button>
+                </div>
+                <p class="chat-hint">
+                    Enter — отправить · Shift+Enter — новая строка · Esc — остановить ·
+                    до {{ cfg.max_upload_mb }} МБ на файл
+                </p>
+            </form>
+            {% endif %}
+        </section>
+    </div>
+</div>
+
+<script>
+    window.CHAT_CONFIG = {{ cfg | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

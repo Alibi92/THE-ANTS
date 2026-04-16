@@ -1,7 +1,13 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
 
+from config import config
+from chat import chat_bp
+
 app = Flask(__name__)
-app.secret_key = 'the-ants-secret-key'
+app.secret_key = config.flask_secret
+app.config["MAX_CONTENT_LENGTH"] = (config.max_upload_mb + 1) * 1024 * 1024
+
+app.register_blueprint(chat_bp)
 
 
 @app.route('/')
@@ -31,4 +37,4 @@ def contact():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=config.flask_debug)

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}THE ANTS{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
 </head>
 <body>
     <header>
@@ -15,6 +16,7 @@
                     <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Главная</a></li>
                     <li><a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">О нас</a></li>
                     <li><a href="{{ url_for('contact') }}" class="{% if request.endpoint == 'contact' %}active{% endif %}">Контакты</a></li>
+                    <li><a href="{{ url_for('chat.index') }}" class="{% if request.endpoint and request.endpoint.startswith('chat.') %}active{% endif %}">AI Чат</a></li>
                 </ul>
                 <button class="menu-toggle" aria-label="Меню">
                     <span></span>
